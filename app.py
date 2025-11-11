@@ -12,8 +12,8 @@ class NLPApp:
 
         self.root = Tk()
         self.root.title('NLPApp')
-        self.root.geometry('350x600')
-        self.root.configure(bg='#43578E')
+        self.root.geometry('500x400')
+        self.root.configure(bg='#0f172a')
         self.login_gui()
         self.root.mainloop()
 
@@ -21,35 +21,42 @@ class NLPApp:
     def login_gui(self):
         self.clear()
 
-        heading = Label(self.root,text='NLPApp',bg='#43578E',fg='white')
+        self.main_frame = Frame(self.root, bg='#1e293b', padx=40, pady=40)
+        self.main_frame.place(relx=0.5,rely=0.5,anchor=CENTER)
+
+        heading = Label(self.main_frame,text='NLP App',bg='#1e293b',fg='white')
         heading.pack(pady=(30,30))
         heading.configure(font=('verdana',24,'bold'))
 
-        label1 = Label(self.root,text='Enter your email')
-        label1.pack(pady=(10,10))
+        label1 = Label(self.main_frame,text='Enter your email',font=('Poppins',11),fg='white',bg='#1e293b')
+        label1.pack(anchor='w',pady=(0,5))
 
-        self.email_input = Entry(self.root,width=50)
-        self.email_input.pack(pady=(5,10),ipady=4)
+        self.email_input = Entry(self.main_frame,width=30,font=('Arial',12),bg='white',fg='black',relief=FLAT,insertbackground='black')
+        self.email_input.pack(pady=(0,15),ipady=5)
 
-        label2 = Label(self.root, text='Enter your password')
-        label2.pack(pady=(10, 10))
+        label2 = Label(self.main_frame, text='Enter your password',font=('Poppins',11),fg='white',bg='#1e293b')
+        label2.pack(anchor='w',pady=(0,5))
 
-        self.password_input = Entry(self.root, width=50,show='*')
-        self.password_input.pack(pady=(5, 10), ipady=4)
+        self.password_input = Entry(self.main_frame, width=30,show='*',font=('Poppins',12),bg='white',fg='black',relief=FLAT,insertbackground='white')
+        self.password_input.pack(pady=(0, 20), ipady=5)
 
-        login_btn = Button(self.root,text='Login',width=20,height=2,command=self.perform_login)
-        login_btn.pack(pady=(10,10))
+        login_btn = Button(self.main_frame,text='Login',width=15,height=2,bg='#3b82f6',fg='white',font=('Poppins SemiBold',12),relief=FLAT,cursor='hand2',command=self.perform_login)
+        login_btn.pack(pady=(0,15))
 
-        label3 = Label(self.root,text='Not a member?')
-        label3.pack(pady=(10,10))
+        bottom_frame = Frame(self.main_frame,bg='#1e293b')
+        bottom_frame.pack()
 
-        redirect_btn = Button(self.root,text='Register Now',command= self.register_gui)
-        redirect_btn.pack(pady=(10,10))
+        label3 = Label(bottom_frame,text='Not a member?',bg='#1e293b',fg='white',font=('Poppins',10))
+        label3.pack(side=LEFT,pady=(10,10))
+
+        redirect_btn = Button(bottom_frame,text='Register Now',bg='#0ea5e9',fg='white',font=('Poppins',10,'bold'),relief=FLAT,width=12,cursor='hand2',command= self.register_gui)
+        redirect_btn.pack(side=LEFT,pady=(5,0))
+
 
     def register_gui(self):
         self.clear()
 
-        heading = Label(self.root, text='NLPApp', bg='#43578E', fg='white')
+        heading = Label(self.root, text='NLPApp', bg='#0f172a', fg='white')
         heading.pack(pady=(30, 30))
         heading.configure(font=('verdana', 24, 'bold'))
 
@@ -82,8 +89,8 @@ class NLPApp:
 
     def clear(self):
         #clear the existing gui
-        for i in self.root.pack_slaves():
-            i.destroy()
+        if hasattr(self,'main_frame'):
+            self.main_frame.destroy()
 
     def perform_registration(self):
         #fetch data from the gui
