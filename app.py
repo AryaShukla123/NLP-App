@@ -37,7 +37,7 @@ class NLPApp:
         label2 = Label(self.main_frame, text='Enter your password',font=('Poppins',11),fg='white',bg='#1e293b')
         label2.pack(anchor='w',pady=(0,5))
 
-        self.password_input = Entry(self.main_frame, width=30,show='*',font=('Poppins',12),bg='white',fg='black',relief=FLAT,insertbackground='white')
+        self.password_input = Entry(self.main_frame, width=30,show='*',font=('Poppins',12),bg='white',fg='black',relief=FLAT,insertbackground='black')
         self.password_input.pack(pady=(0, 20), ipady=5)
 
         login_btn = Button(self.main_frame,text='Login',width=15,height=2,bg='#3b82f6',fg='white',font=('Poppins SemiBold',12),relief=FLAT,cursor='hand2',command=self.perform_login)
@@ -128,21 +128,75 @@ class NLPApp:
     def home_gui(self):
         self.clear()
 
-        heading = Label(self.root, text='NLPApp', bg='#43578E', fg='white')
-        heading.pack(pady=(30, 30))
-        heading.configure(font=('verdana', 24, 'bold'))
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#1C2230", height=70)
+        self.topbar.pack(fill="x")
 
-        sentiment_btn = Button(self.root, text='Sentiment Analysis', width=30, height=4, command=self.sentiment_gui)
-        sentiment_btn.pack(pady=(10, 10))
+        self.title_label = Label(
+            self.topbar,
+            text="NLP App",
+            bg="#1C2230",
+            fg="#5BC0BE",
+            font=("Helvetica", 22, "bold")
+        )
+        self.title_label.pack(side="left", padx=40, pady=20)
 
-        ner_btn = Button(self.root, text='Named Entity Recognition', width=30, height=4, command=self.perform_registration)
-        ner_btn.pack(pady=(10, 10))
+        self.logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            height=1,
+            relief="flat",
+            activebackground="#D62828",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        self.logout_btn.pack(side="right", padx=40, pady=20)
 
-        emotion_btn = Button(self.root, text='Emotion Prediction', width=30, height=4, command=self.perform_registration)
-        emotion_btn.pack(pady=(10, 10))
+        # ---------- Main Frame ----------
+        self.main_frame = Frame(self.root, bg="#182235",bd=2,relief="flat")
+        self.main_frame.place(relx=0.5,rely=0.53,anchor="center",width=500,height=400)
 
-        logout_btn = Button(self.root, text='Logout', command=self.login_gui)
-        logout_btn.pack(pady=(10, 10))
+        # Heading
+        self.heading = Label(
+            self.main_frame,
+            text="Choose an NLP Task",
+            bg="#182235",
+            fg="white",
+            font=("Helvetica", 20, "bold")
+        )
+        self.heading.pack(pady=(50, 30))
+
+        # ---------- Buttons ----------
+        button_style = {
+            "bg": "#2C4E80",
+            "fg": "white",
+            "font": ("Helvetica", 13, "bold"),
+            "width": 25,
+            "height": 2,
+            "relief": "flat",
+            "activebackground": "#345D99",
+            "cursor": "hand2",
+        }
+
+        self.sentiment_btn = Button(
+            self.main_frame, text="Sentiment Analysis", **button_style,command=self.sentiment_gui
+        )
+        self.sentiment_btn.pack(pady=15)
+
+        self.ner_btn = Button(
+            self.main_frame, text="Named Entity Recognition (NER)", **button_style
+        )
+        self.ner_btn.pack(pady=15)
+
+        self.emotion_btn = Button(
+            self.main_frame, text="Emotion Prediction", **button_style
+        )
+        self.emotion_btn.pack(pady=15)
+
 
     def sentiment_gui(self):
         self.clear()
