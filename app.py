@@ -129,14 +129,14 @@ class NLPApp:
         self.clear()
 
         # ---------- Top Bar ----------
-        self.topbar = Frame(self.root, bg="#1C2230", height=70)
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
         self.topbar.pack(fill="x")
 
         self.title_label = Label(
             self.topbar,
             text="NLP App",
-            bg="#1C2230",
-            fg="#5BC0BE",
+            bg="#C0CCED",
+            fg="black",
             font=("Helvetica", 22, "bold")
         )
         self.title_label.pack(side="left", padx=40, pady=20)
@@ -157,15 +157,15 @@ class NLPApp:
         self.logout_btn.pack(side="right", padx=40, pady=20)
 
         # ---------- Main Frame ----------
-        self.main_frame = Frame(self.root, bg="#182235",bd=2,relief="flat")
+        self.main_frame = Frame(self.root, bg="#C0CCED",bd=2,relief="flat")
         self.main_frame.place(relx=0.5,rely=0.53,anchor="center",width=500,height=400)
 
         # Heading
         self.heading = Label(
             self.main_frame,
             text="Choose an NLP Task",
-            bg="#182235",
-            fg="white",
+            bg="#C0CCED",
+            fg="black",
             font=("Helvetica", 20, "bold")
         )
         self.heading.pack(pady=(50, 30))
@@ -201,28 +201,31 @@ class NLPApp:
     def sentiment_gui(self):
         self.clear()
 
-        heading = Label(self.root, text='NLPApp', bg='#43578E', fg='white')
+        self.main_frame = Frame(self.root, bg='#1e293b', padx=40, pady=40)
+        self.main_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        heading = Label(self.main_frame, text='NLPApp', bg='#43578E', fg='white')
         heading.pack(pady=(30, 30))
         heading.configure(font=('verdana', 24, 'bold'))
 
-        heading2 = Label(self.root, text='Sentiment Analysis', bg='#43578E', fg='white')
+        heading2 = Label(self.main_frame, text='Sentiment Analysis', bg='#43578E', fg='white')
         heading2.pack(pady=(10, 20))
         heading2.configure(font=('verdana', 20))
 
-        label = Label(self.root, text='Enter the text')
+        label = Label(self.main_frame, text='Enter the text')
         label.pack(pady=(10, 10))
 
-        self.sentiment_input = Entry(self.root, width=50)
+        self.sentiment_input = Entry(self.main_frame, width=50)
         self.sentiment_input.pack(pady=(5, 10), ipady=30)
 
-        sentiment_btn = Button(self.root, text='Analyze sentiment', command=self.do_sentiment_analysis)
+        sentiment_btn = Button(self.main_frame, text='Analyze sentiment', command=self.do_sentiment_analysis)
         sentiment_btn.pack(pady=(10, 10))
 
-        self.sentiment_result = Label(self.root, text='',bg='#43578E',fg='white')
+        self.sentiment_result = Label(self.main_frame, text='',bg='#43578E',fg='white')
         self.sentiment_result.pack(pady=(10, 10))
         self.sentiment_result.configure(font=('verdana', 16))
 
-        goback_btn = Button(self.root, text='Go Back', command=self.home_gui)
+        goback_btn = Button(self.main_frame, text='Go Back', command=self.home_gui)
         goback_btn.pack(pady=(10, 10))
 
     def do_sentiment_analysis(self):
