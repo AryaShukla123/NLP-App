@@ -201,32 +201,86 @@ class NLPApp:
     def sentiment_gui(self):
         self.clear()
 
-        self.main_frame = Frame(self.root, bg='#1e293b', padx=40, pady=40)
-        self.main_frame.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.card = Frame(
+        self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.5, anchor="center")
 
-        heading = Label(self.main_frame, text='NLPApp', bg='#43578E', fg='white')
-        heading.pack(pady=(30, 30))
-        heading.configure(font=('verdana', 24, 'bold'))
 
-        heading2 = Label(self.main_frame, text='Sentiment Analysis', bg='#43578E', fg='white')
-        heading2.pack(pady=(10, 20))
-        heading2.configure(font=('verdana', 20))
+        heading = Label(
+            self.card,
+            text="Sentiment Analysis",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
 
-        label = Label(self.main_frame, text='Enter the text')
-        label.pack(pady=(10, 10))
 
-        self.sentiment_input = Entry(self.main_frame, width=50)
-        self.sentiment_input.pack(pady=(5, 10), ipady=30)
+        text_label = Label(
+            self.card,
+            text="Enter text to analyze:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        text_label.pack(anchor="w")
 
-        sentiment_btn = Button(self.main_frame, text='Analyze sentiment', command=self.do_sentiment_analysis)
-        sentiment_btn.pack(pady=(10, 10))
 
-        self.sentiment_result = Label(self.main_frame, text='',bg='#43578E',fg='white')
-        self.sentiment_result.pack(pady=(10, 10))
-        self.sentiment_result.configure(font=('verdana', 16))
+        self.sentiment_input = Entry(
+            self.card,
+            width=45,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat",
+            insertbackground="black"
+        )
+        self.sentiment_input.pack(pady=(5, 20), ipady=8)
 
-        goback_btn = Button(self.main_frame, text='Go Back', command=self.home_gui)
-        goback_btn.pack(pady=(10, 10))
+
+        analyze_btn = Button(
+            self.card,
+            text="Analyze Sentiment",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            height=1,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_sentiment_analysis
+        )
+        analyze_btn.pack(pady=(0, 20))
+
+
+        self.sentiment_result = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.sentiment_result.pack(pady=(5, 20))
+
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
 
     def do_sentiment_analysis(self):
 
@@ -242,6 +296,10 @@ class NLPApp:
             print(txt)
 
         self.sentiment_result['text'] = txt
+
+
+
+
 
 
 
