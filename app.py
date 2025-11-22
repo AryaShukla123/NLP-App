@@ -1,14 +1,14 @@
 from tkinter import *
 from mydb import Database
 from tkinter import messagebox
-from myapi import API
+import myapi
 
 class NLPApp:
 
     def __init__(self):
 
         self.dbo = Database()
-        self.apio = API()
+
 
         self.root = Tk()
         self.root.title('NLPApp')
@@ -94,9 +94,12 @@ class NLPApp:
         redirect_btn.pack(side=LEFT,pady=(5, 0))
 
     def clear(self):
-        #clear the existing gui
-        if hasattr(self,'main_frame'):
-            self.main_frame.destroy()
+
+        widgets = ["main_frame", "card", "topbar"]
+
+        for w in widgets:
+            if hasattr(self, w):
+                getattr(self, w).destroy()
 
     def perform_registration(self):
         #fetch data from the gui
@@ -283,19 +286,20 @@ class NLPApp:
         back_btn.pack()
 
     def do_sentiment_analysis(self):
-
         text = self.sentiment_input.get()
-        result = self.apio.sentiment_analysis(text)
 
-        txt = ''
-        for i in range(len(result['scored_labels'])):
-            label = result['scored_label'][i]['label']
-            score = result['scored_label'][i]['score']
-            txt += f"{i + 1}.{label} ({score})\n"
+        if not text.strip():
+            self.sentiment_result['text'] = "Please enter text!"
+            return
 
-            print(txt)
+        try:
+            result = myapi.get_sentiment(text)
+            sentiment = result.get("sentiment", "No sentiment found")
 
-        self.sentiment_result['text'] = txt
+            self.sentiment_result['text'] = f"Sentiment: {sentiment}"
+
+        except Exception as e:
+            self.sentiment_result['text'] = f"Error: {str(e)}"
 
 
 
