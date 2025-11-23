@@ -191,7 +191,7 @@ class NLPApp:
         self.sentiment_btn.pack(pady=15)
 
         self.ner_btn = Button(
-            self.main_frame, text="Named Entity Recognition (NER)", **button_style
+            self.main_frame, text="Named Entity Recognition (NER)", **button_style, command=self.ner_gui
         )
         self.ner_btn.pack(pady=15)
 
@@ -300,6 +300,83 @@ class NLPApp:
 
         except Exception as e:
             self.sentiment_result['text'] = f"Error: {str(e)}"
+
+    def ner_gui(self):
+        self.clear()
+
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.5, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Named Entity Recognition (NER)",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        text_label = Label(
+            self.card,
+            text="Enter text for NER:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        text_label.pack(anchor="w")
+
+        self.ner_input = Entry(
+            self.card,
+            width=45,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat",
+            insertbackground="black"
+        )
+        self.ner_input.pack(pady=(5, 20), ipady=8)
+
+        analyze_btn = Button(
+            self.card,
+            text="Analyze NER",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            height=1,
+            relief="flat",
+            cursor="hand2",
+        )
+        analyze_btn.pack(pady=(0, 20))
+
+        self.ner_result = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.ner_result.pack(pady=(5, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
 
 
 
