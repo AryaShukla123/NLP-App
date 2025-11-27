@@ -262,9 +262,10 @@ class NLPApp:
         else:
             messagebox.showerror('Error','Incorrect email/password')
 
-
     def home_gui(self):
         self.clear()
+
+        self.scrollable_frame = None
 
         # ---------- Top Bar ----------
         self.topbar = Frame(self.root, bg="#C0CCED", height=70)
@@ -295,8 +296,8 @@ class NLPApp:
         self.logout_btn.pack(side="right", padx=40, pady=20)
 
         # ---------- Main Frame ----------
-        self.main_frame = Frame(self.root, bg="#C0CCED",bd=2,relief="flat")
-        self.main_frame.place(relx=0.5,rely=0.53,anchor="center",width=500,height=400)
+        self.main_frame = Frame(self.root, bg="#C0CCED", bd=2, relief="flat")
+        self.main_frame.place(relx=0.5, rely=0.55, anchor="center", width=500, height=400)
 
         # Heading
         self.heading = Label(
@@ -306,7 +307,32 @@ class NLPApp:
             fg="black",
             font=("Helvetica", 20, "bold")
         )
-        self.heading.pack(pady=(50, 30))
+        self.heading.pack(pady=(20, 10))
+
+        # ---------- Scrollable Frame ----------
+        container = Frame(self.main_frame, bg="#C0CCED")
+        container.pack(fill="both", expand=True, pady=10)
+
+        canvas = Canvas(container, bg="#C0CCED", highlightthickness=0)
+        canvas.pack(side="left", fill="both", expand=True)
+
+        scrollbar = Scrollbar(container, orient="vertical", command=canvas.yview)
+        scrollbar.pack(side="right", fill="y")
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        self.scrollable_frame = Frame(canvas, bg="#C0CCED")
+
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+
+        def configure_scroll(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        self.scrollable_frame.bind("<Configure>", configure_scroll)
 
         # ---------- Buttons ----------
         button_style = {
@@ -320,20 +346,22 @@ class NLPApp:
             "cursor": "hand2",
         }
 
-        self.sentiment_btn = Button(
-            self.main_frame, text="Sentiment Analysis", **button_style,command=self.sentiment_gui
-        )
-        self.sentiment_btn.pack(pady=15)
+        tasks = [
+            ("Sentiment Analysis", self.sentiment_gui),
+            ("Named Entity Recognition (NER)", self.ner_gui),
+            ("Emotion Prediction", self.emotion_gui),
+            ("Language Detection", self.language_gui),
+            ("Paraphrasing", self.paraphrase_gui),
+            ("Semantic Search", self.semantic_search_gui),
+            ("Semantic Similarity", self.semantic_similarity_gui),
+            ("Summarization", self.summarization_gui),
+            ("Translation", self.translation_gui),
+            ("Question Answering", self.qa_gui),
+        ]
 
-        self.ner_btn = Button(
-            self.main_frame, text="Named Entity Recognition (NER)", **button_style, command=self.ner_gui
-        )
-        self.ner_btn.pack(pady=15)
-
-        self.emotion_btn = Button(
-            self.main_frame, text="Emotion Prediction", **button_style,command=self.emotion_gui
-        )
-        self.emotion_btn.pack(pady=15)
+        for text, command in tasks:
+            btn = Button(self.scrollable_frame, text=text, command=command, **button_style)
+            btn.pack(pady=10,anchor="center")
 
 
     def sentiment_gui(self):
@@ -690,5 +718,26 @@ class NLPApp:
 
         txt = f"Detected Emotion: {result['emotion'].capitalize()}"
         self.emotion_result["text"] = txt
+
+    def language_gui(self):
+        pass
+
+    def paraphrase_gui(self):
+        pass
+
+    def semantic_search_gui(self):
+        pass
+
+    def semantic_similarity_gui(self):
+        pass
+
+    def summarization_gui(self):
+        pass
+
+    def translation_gui(self):
+        pass
+
+    def qa_gui(self):
+        pass
 
 nlp = NLPApp()
