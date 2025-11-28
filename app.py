@@ -321,18 +321,17 @@ class NLPApp:
 
         canvas.configure(yscrollcommand=scrollbar.set)
 
-        self.scrollable_frame = Frame(canvas, bg="#C0CCED")
-
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
+        scroll_frame = Frame(canvas, bg="#C0CCED")
+        canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
 
         def configure_scroll(event):
             canvas.configure(scrollregion=canvas.bbox("all"))
 
-        self.scrollable_frame.bind("<Configure>", configure_scroll)
+        scroll_frame.bind("<Configure>", configure_scroll)
+
+        # ---------- Center Align Buttons ----------
+        buttons_frame = Frame(scroll_frame, bg="#C0CCED")
+        buttons_frame.pack(pady=20)
 
         # ---------- Buttons ----------
         button_style = {
@@ -360,9 +359,17 @@ class NLPApp:
         ]
 
         for text, command in tasks:
-            btn = Button(self.scrollable_frame, text=text, command=command, **button_style)
-            btn.pack(pady=10,anchor="center")
-
+            btn = Button(
+                buttons_frame,
+                text=text,
+                width=50,
+                height=2,
+                bg="#6E88C9",
+                fg="white",
+                font=("Arial", 12),
+                command=command if command else None
+            )
+            btn.pack(pady=10)
 
     def sentiment_gui(self):
         self.clear()
@@ -720,10 +727,242 @@ class NLPApp:
         self.emotion_result["text"] = txt
 
     def language_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        # ---------- Language Detection Card ----------
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.55, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Language Detection",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        # Label
+        text_label = Label(
+            self.card,
+            text="Enter text to detect language:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        text_label.pack(anchor="w")
+
+        self.language_input = Entry(
+            self.card,
+            width=45,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat",
+            insertbackground="black"
+        )
+        self.language_input.pack(pady=(5, 20), ipady=8)
+
+        detect_btn = Button(
+            self.card,
+            text="Detect Language",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_language_detection
+
+        )
+        detect_btn.pack(pady=(0, 20))
+
+        self.language_result = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.language_result.pack(pady=(5, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def do_language_detection(self):
+        # Get text from the input field
+        text = self.language_input.get()
+
+        # Call your API function
+        result = myapi.detect_language(text)
+
+        # Prepare display text
+        txt = f"Detected Language:\n\n{result['language']}"
+
+        # Show result in the result widget
+        self.language_result["text"] = txt
 
     def paraphrase_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        # ---------- Paraphrasing Card ----------
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.55, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Paraphrasing",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        # Label
+        text_label = Label(
+            self.card,
+            text="Enter text to paraphrase:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        text_label.pack(anchor="w")
+
+        self.paraphrase_input = Entry(
+            self.card,
+            width=45,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat",
+            insertbackground="black"
+        )
+        self.paraphrase_input.pack(pady=(5, 20), ipady=8)
+
+        paraphrase_btn = Button(
+            self.card,
+            text="Paraphrase",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_paraphrase
+
+        )
+        paraphrase_btn.pack(pady=(0, 20))
+
+        self.paraphrase_result = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.paraphrase_result.pack(pady=(5, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def do_paraphrase(self):
+        # Get text from the input field
+        text = self.paraphrase_input.get()
+
+        # Call the API function
+        result = myapi.get_paraphrase(text)
+
+        # Prepare the display text
+        txt = f"Paraphrased Text:\n\n{result['paraphrased_text']}"
+
+        # Show result in the result widget
+        self.paraphrase_result["text"] = txt
 
     def semantic_search_gui(self):
         pass

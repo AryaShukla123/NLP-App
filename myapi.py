@@ -3,13 +3,18 @@ import json
 from dotenv import load_dotenv
 import os
 
+# Load variables from .env
 load_dotenv()
 
-api_key = os.getenv("AIzaSyBkfBTvcp2uyh8xcmhdRwKJupwycTJKwGs")
+# Get the API key from the environment variable
+api_key = os.getenv("GOOGLE_API_KEY")  # <--- no hardcoded key here
 
+# Configure Gemini API with the key
 genai.configure(api_key=api_key)
 
+# Choose the model
 model = genai.GenerativeModel("models/gemini-2.5-flash")
+
 
 def get_sentiment(text):
     prompt = f"""
@@ -88,3 +93,50 @@ def get_emotion(text):
     except:
         clean = clean.replace("```json", "").replace("```", "").strip()
         return json.loads(clean)
+
+def detect_language(text):
+    prompt = f"""
+    You are an NLP model. Detect the language of the following text.
+    Return ONLY JSON. No explanations.
+
+    Text: "{text}"
+
+    Format:
+    {{
+        "language": "English/French/Spanish/etc"
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    try:
+        data = json.loads(clean)
+        return data
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
+def get_paraphrase(text):
+    prompt = f"""
+    You are an NLP model. Paraphrase the following text.
+    Return ONLY JSON. No extra text.
+
+    Text: "{text}"
+
+    Format:
+    {{
+        "paraphrased_text": "Your paraphrased version of the text here"
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    try:
+        data = json.loads(clean)
+        return data
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
