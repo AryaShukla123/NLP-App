@@ -3,16 +3,12 @@ import json
 from dotenv import load_dotenv
 import os
 
-# Load variables from .env
 load_dotenv()
 
-# Get the API key from the environment variable
-api_key = os.getenv("GOOGLE_API_KEY")  # <--- no hardcoded key here
+api_key = os.getenv("GOOGLE_API_KEY")
 
-# Configure Gemini API with the key
 genai.configure(api_key=api_key)
 
-# Choose the model
 model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 
@@ -139,4 +135,175 @@ def get_paraphrase(text):
     except:
         clean = clean.replace("```json", "").replace("```", "").strip()
         return json.loads(clean)
+
+def semantic_search(query):
+    prompt = f"""
+    You are an NLP model performing semantic search.
+
+    Task:
+    Given a user query, return the top 5 semantically similar topics or ideas.
+
+    Return ONLY JSON. No explanation.
+
+    Query: "{query}"
+
+    Format:
+    {{
+        "results": [
+            "result 1",
+            "result 2",
+            "result 3",
+            "result 4",
+            "result 5"
+        ]
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    try:
+        return json.loads(clean)
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
+def semantic_similarity(text1, text2):
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+
+    prompt = f"""
+    Calculate the semantic similarity between these two texts.
+    Text 1: {text1}
+    Text 2: {text2}
+
+    Give the answer only in this JSON format:
+    {{
+        "similarity_score": number_between_0_and_1,
+        "explanation": "short explanation here"
+    }}
+    """
+
+    response = model.generate_content(prompt)
+
+    try:
+        # Gemini response contains JSON inside text
+        import json
+        data = json.loads(response.text)
+        return data
+
+    except:
+        return {
+            "similarity_score": 0,
+            "explanation": "Could not calculate similarity."
+        }
+
+def summarize_text(text):
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+
+    prompt = f"""
+    Summarize the following text in a concise and clear way.
+
+    Text: {text}
+
+    Give the answer ONLY in this JSON format:
+    {{
+        "summary": "summarized text here",
+        "length": "short/medium/long"
+    }}
+    """
+
+    response = model.generate_content(prompt)
+
+    try:
+        import json
+        data = json.loads(response.text)
+        return data
+
+    except:
+        return {
+            "summary": "",
+            "length": "unknown"
+        }
+def summarize_text(text):
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+
+    prompt = f"""
+    You are an NLP summarization model.
+    Summarize the following text in a short and clear way.
+    Do NOT add anything extra.
+
+    Text: "{text}"
+
+    Return only JSON in this format:
+    {{
+        "summary": "your summary here"
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    import json
+    try:
+        data = json.loads(clean)
+        return data
+
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
+def translate_text(text, target_lang):
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+
+    prompt = f"""
+    You are a translation model.
+    Translate the following text into the target language.
+
+    Text: "{text}"
+    Target Language: "{target_lang}"
+
+    Return ONLY JSON:
+    {{
+        "translated_text": "..."
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    import json
+    try:
+        return json.loads(clean)
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
+def answer_question(question, context):
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+
+    prompt = f"""
+    You are a QA model.
+    Answer the question using the given context.
+    Return ONLY JSON.
+
+    Context: "{context}"
+
+    Question: "{question}"
+
+    JSON Format:
+    {{
+        "answer": "..."
+    }}
+    """
+
+    response = model.generate_content(prompt)
+    clean = response.text.strip()
+
+    import json
+    try:
+        return json.loads(clean)
+    except:
+        clean = clean.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean)
+
 

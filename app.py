@@ -309,7 +309,7 @@ class NLPApp:
         )
         self.heading.pack(pady=(20, 10))
 
-        # ---------- Scrollable Frame ----------
+
         container = Frame(self.main_frame, bg="#C0CCED")
         container.pack(fill="both", expand=True, pady=10)
 
@@ -329,7 +329,7 @@ class NLPApp:
 
         scroll_frame.bind("<Configure>", configure_scroll)
 
-        # ---------- Center Align Buttons ----------
+
         buttons_frame = Frame(scroll_frame, bg="#C0CCED")
         buttons_frame.pack(pady=20)
 
@@ -380,7 +380,7 @@ class NLPApp:
 
         title_label = Label(
             self.topbar,
-            text="NLP App",
+            text="NLP App - Sentiment Analysis",
             bg="#C0CCED",
             fg="black",
             font=("Helvetica", 22, "bold")
@@ -418,7 +418,7 @@ class NLPApp:
         )
         heading.pack(pady=(0, 25))
 
-        # Label
+
         text_label = Label(
             self.card,
             text="Enter text to analyze:",
@@ -503,7 +503,7 @@ class NLPApp:
 
         title_label = Label(
             self.topbar,
-            text="NLP App",
+            text="NLP App - NER",
             bg="#C0CCED",
             fg="black",
             font=("Helvetica", 22, "bold")
@@ -621,7 +621,7 @@ class NLPApp:
 
         title_label = Label(
             self.topbar,
-            text="NLP App",
+            text="NLP App - Emotion Detection",
             bg="#C0CCED",
             fg="black",
             font=("Helvetica", 22, "bold")
@@ -641,7 +641,7 @@ class NLPApp:
         )
         logout_btn.pack(side="right", padx=40, pady=20)
 
-        # ---------- NER Card ----------
+
         self.card = Frame(
             self.root,
             bg="#C0CCED",
@@ -659,7 +659,7 @@ class NLPApp:
         )
         heading.pack(pady=(0, 25))
 
-        # Label
+
         text_label = Label(
             self.card,
             text="Enter text:",
@@ -735,7 +735,7 @@ class NLPApp:
 
         title_label = Label(
             self.topbar,
-            text="NLP App",
+            text="NLP App - Language Detection",
             bg="#C0CCED",
             fg="black",
             font=("Helvetica", 22, "bold")
@@ -773,7 +773,7 @@ class NLPApp:
         )
         heading.pack(pady=(0, 25))
 
-        # Label
+
         text_label = Label(
             self.card,
             text="Enter text to detect language:",
@@ -833,16 +833,16 @@ class NLPApp:
         back_btn.pack()
 
     def do_language_detection(self):
-        # Get text from the input field
+
         text = self.language_input.get()
 
-        # Call your API function
+
         result = myapi.detect_language(text)
 
-        # Prepare display text
+
         txt = f"Detected Language:\n\n{result['language']}"
 
-        # Show result in the result widget
+
         self.language_result["text"] = txt
 
     def paraphrase_gui(self):
@@ -854,7 +854,7 @@ class NLPApp:
 
         title_label = Label(
             self.topbar,
-            text="NLP App",
+            text="NLP App - Paraphrasing",
             bg="#C0CCED",
             fg="black",
             font=("Helvetica", 22, "bold")
@@ -892,7 +892,7 @@ class NLPApp:
         )
         heading.pack(pady=(0, 25))
 
-        # Label
+
         text_label = Label(
             self.card,
             text="Enter text to paraphrase:",
@@ -952,31 +952,660 @@ class NLPApp:
         back_btn.pack()
 
     def do_paraphrase(self):
-        # Get text from the input field
+
         text = self.paraphrase_input.get()
 
-        # Call the API function
         result = myapi.get_paraphrase(text)
 
-        # Prepare the display text
         txt = f"Paraphrased Text:\n\n{result['paraphrased_text']}"
 
-        # Show result in the result widget
         self.paraphrase_result["text"] = txt
 
     def semantic_search_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App - Semantic Search",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        # ---------- Semantic Search Card ----------
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.55, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Semantic Search",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        query_label = Label(
+            self.card,
+            text="Enter your search query:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        query_label.pack(anchor="w")
+
+        self.semantic_input = Entry(
+            self.card,
+            width=45,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat",
+            insertbackground="black"
+        )
+        self.semantic_input.pack(pady=(5, 20), ipady=8)
+
+        search_btn = Button(
+            self.card,
+            text="Search",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_semantic_search
+        )
+        search_btn.pack(pady=(0, 20))
+
+        self.semantic_result = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.semantic_result.pack(pady=(5, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def do_semantic_search(self):
+        query = self.semantic_input.get()
+        result = myapi.semantic_search(query)
+
+        txt = "Search Results:\n\n"
+        for item in result["results"]:
+            txt += f"- {item}\n\n"
+
+        self.semantic_result["text"] = txt
 
     def semantic_similarity_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App - Semantic Similarity",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.52, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Semantic Similarity",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        Label(
+            self.card,
+            text="Enter First Text:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        ).pack(anchor="w")
+
+        self.sim_text1 = Text(
+            self.card,
+            height=4,
+            width=50,
+            font=("Helvetica", 12),
+            bd=0,
+            relief="flat",
+            wrap="word"
+        )
+        self.sim_text1.pack(pady=(5, 20))
+
+        Label(
+            self.card,
+            text="Enter Second Text:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        ).pack(anchor="w")
+
+        self.sim_text2 = Text(
+            self.card,
+            height=4,
+            width=50,
+            font=("Helvetica", 12),
+            bd=0,
+            relief="flat",
+            wrap="word"
+        )
+        self.sim_text2.pack(pady=(5, 20))
+
+        sim_btn = Button(
+            self.card,
+            text="Check Similarity",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.run_semantic_similarity
+        )
+        sim_btn.pack(pady=(10, 20))
+
+        self.sim_output = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.sim_output.pack(pady=(10, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def run_semantic_similarity(self):
+        t1 = self.sim_text1.get("1.0", "end").strip()
+        t2 = self.sim_text2.get("1.0", "end").strip()
+
+        if t1 == "" or t2 == "":
+            self.sim_output["text"] = "Please enter both texts."
+            return
+
+        result = myapi.semantic_similarity(t1, t2)
+
+        score = result.get("similarity_score", 0)
+        explanation = result.get("explanation", "No explanation available.")
+
+        final_text = f"Similarity Score: {score}\n\nExplanation: {explanation}"
+
+        self.sim_output["text"] = final_text
 
     def summarization_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App - Summarization",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.52, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Text Summarization",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        Label(
+            self.card,
+            text="Enter text to summarize:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        ).pack(anchor="w")
+
+        self.sum_input = Text(
+            self.card,
+            height=6,
+            width=50,
+            font=("Helvetica", 12),
+            bd=0,
+            relief="flat",
+            wrap="word"
+        )
+        self.sum_input.pack(pady=(5, 20))
+
+        sum_btn = Button(
+            self.card,
+            text="Generate Summary",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.run_summarization
+        )
+        sum_btn.pack(pady=(10, 20))
+
+        self.sum_output = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.sum_output.pack(pady=(10, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def run_summarization(self):
+        text = self.sum_input.get("1.0", "end").strip()
+
+        if text == "":
+            self.sum_output["text"] = "Please enter text to summarize."
+            return
+
+        result = myapi.summarize_text(text)
+
+        summary = result.get("summary", "No summary available.")
+
+        final_output = f"Summary:\n\n{summary}"
+
+        self.sum_output["text"] = final_output
 
     def translation_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App - Translation",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        # ---------- Card ----------
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.55, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Translation",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        inp_label = Label(
+            self.card,
+            text="Enter text to translate:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        inp_label.pack(anchor="w")
+
+        self.trans_input = Text(
+            self.card,
+            width=45,
+            height=5,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat"
+        )
+        self.trans_input.pack(pady=(5, 20))
+
+        # Language dropdown
+        lang_label = Label(
+            self.card,
+            text="Select target language:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        lang_label.pack(anchor="w")
+
+        self.trans_lang = StringVar()
+        languages = ["Hindi", "English", "French", "Spanish", "German", "Tamil", "Telugu"]
+
+        lang_dropdown = OptionMenu(self.card, self.trans_lang, *languages)
+        lang_dropdown.config(width=20, font=("Helvetica", 12))
+        lang_dropdown.pack(pady=(5, 20))
+
+        trans_btn = Button(
+            self.card,
+            text="Translate",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_translation
+        )
+        trans_btn.pack(pady=(0, 20))
+
+        self.trans_output = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.trans_output.pack(pady=(10, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def do_translation(self):
+        text = self.trans_input.get("1.0", "end").strip()
+        target = self.trans_lang.get().strip()
+
+        if text == "" or target == "":
+            self.trans_output["text"] = "Please enter text and select language."
+            return
+
+        result = myapi.translate_text(text, target)
+
+        translated = result.get("translated_text", "No translation available.")
+
+        final_text = f"Translated Text:\n\n{translated}"
+
+        self.trans_output["text"] = final_text
 
     def qa_gui(self):
-        pass
+        self.clear()
+
+        # ---------- Top Bar ----------
+        self.topbar = Frame(self.root, bg="#C0CCED", height=70)
+        self.topbar.pack(fill="x")
+
+        title_label = Label(
+            self.topbar,
+            text="NLP App - Q/A",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 22, "bold")
+        )
+        title_label.pack(side="left", padx=40, pady=20)
+
+        logout_btn = Button(
+            self.topbar,
+            text="Logout",
+            bg="#E63946",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.login_gui
+        )
+        logout_btn.pack(side="right", padx=40, pady=20)
+
+        # ---------- Card ----------
+        self.card = Frame(
+            self.root,
+            bg="#C0CCED",
+            padx=40,
+            pady=40
+        )
+        self.card.place(relx=0.5, rely=0.55, anchor="center")
+
+        heading = Label(
+            self.card,
+            text="Question Answering",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 20, "bold")
+        )
+        heading.pack(pady=(0, 25))
+
+        ctx_label = Label(
+            self.card,
+            text="Enter context paragraph:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        ctx_label.pack(anchor="w")
+
+        self.qa_context = Text(
+            self.card,
+            width=45,
+            height=5,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat"
+        )
+        self.qa_context.pack(pady=(5, 20))
+
+        q_label = Label(
+            self.card,
+            text="Enter your question:",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 12)
+        )
+        q_label.pack(anchor="w")
+
+        self.qa_question = Text(
+            self.card,
+            width=45,
+            height=3,
+            font=("Helvetica", 13),
+            bg="white",
+            fg="black",
+            relief="flat"
+        )
+        self.qa_question.pack(pady=(5, 20))
+
+        qa_btn = Button(
+            self.card,
+            text="Get Answer",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 13, "bold"),
+            width=22,
+            relief="flat",
+            cursor="hand2",
+            command=self.do_qa
+        )
+        qa_btn.pack(pady=(0, 20))
+
+        self.qa_output = Label(
+            self.card,
+            text="",
+            bg="#C0CCED",
+            fg="black",
+            font=("Helvetica", 14, "bold"),
+            wraplength=400,
+            justify="center"
+        )
+        self.qa_output.pack(pady=(10, 20))
+
+        back_btn = Button(
+            self.card,
+            text="← Back",
+            bg="#3D5A80",
+            fg="white",
+            font=("Helvetica", 12, "bold"),
+            width=10,
+            relief="flat",
+            cursor="hand2",
+            command=self.home_gui
+        )
+        back_btn.pack()
+
+    def do_qa(self):
+        question = self.qa_question.get("1.0", "end").strip()
+        context = self.qa_context.get("1.0", "end").strip()
+
+        if question == "" or context == "":
+            self.qa_output["text"] = "Please enter both question and context."
+            return
+
+        result = myapi.answer_question(question, context)
+
+        answer = result.get("answer", "No answer found.")
+
+        final_text = f"Answer:\n\n{answer}"
+
+        self.qa_output["text"] = final_text
+
 
 nlp = NLPApp()
